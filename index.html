@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kyalami Scuba Club — Course Enrollment & Waivers</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f4f8; color: #1a2e3b; min-height: 100vh; }
+  header { background: #003d5c; color: white; padding: 18px 20px; text-align: center; }
+  header h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: 0.5px; }
+  header p { font-size: 0.85rem; opacity: 0.8; margin-top: 4px; }
+
+  .progress-bar { background: #002d44; padding: 0; height: 6px; }
+  .progress-fill { background: #00aacc; height: 100%; transition: width 0.4s ease; }
+
+  .step-label { background: #004a6e; color: #7ecde8; text-align: center; padding: 8px; font-size: 0.78rem; letter-spacing: 0.5px; text-transform: uppercase; }
+
+  .container { max-width: 680px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  .card { background: white; border-radius: 12px; padding: 28px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 20px; }
+  .card h2 { font-size: 1.15rem; color: #003d5c; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid #e8f4f8; }
+
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #2a4a5e; margin-bottom: 6px; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 10px 13px; border: 1.5px solid #cdd8e0; border-radius: 8px;
+    font-size: 0.95rem; color: #1a2e3b; transition: border-color 0.2s;
+    -webkit-appearance: none; appearance: none;
+  }
+  .form-group input:focus, .form-group select:focus { outline: none; border-color: #00aacc; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23003d5c' d='M1 1l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+
+  /* Medical questionnaire */
+  .med-section { margin-bottom: 22px; }
+  .med-section h3 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #003d5c; background: #e8f4f8; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; }
+  .med-question { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f4f8; }
+  .med-question:last-child { border-bottom: none; }
+  .med-question p { flex: 1; font-size: 0.88rem; line-height: 1.5; }
+  .med-question p .req-flag { color: #c0392b; font-weight: 700; font-size: 0.75rem; margin-left: 4px; }
+  .yn-buttons { display: flex; gap: 6px; flex-shrink: 0; }
+  .yn-btn { padding: 6px 14px; border: 1.5px solid #cdd8e0; border-radius: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer; background: white; color: #555; transition: all 0.15s; white-space: nowrap; }
+  .yn-btn.yes-active { background: #c0392b; border-color: #c0392b; color: white; }
+  .yn-btn.no-active  { background: #27ae60; border-color: #27ae60; color: white; }
+
+  /* Medical alert box */
+  .alert { padding: 12px 16px; border-radius: 8px; margin: 14px 0; font-size: 0.87rem; line-height: 1.5; }
+  .alert-warn { background: #fff3cd; border-left: 4px solid #f39c12; }
+  .alert-info  { background: #d4edda; border-left: 4px solid #28a745; }
+  .alert-danger{ background: #fdecea; border-left: 4px solid #c0392b; }
+
+  /* Signature pad */
+  .sig-wrap { border: 2px dashed #cdd8e0; border-radius: 10px; position: relative; background: #fafbfc; }
+  .sig-wrap canvas { display: block; width: 100%; touch-action: none; border-radius: 8px; }
+  .sig-label { text-align: center; font-size: 0.78rem; color: #888; padding: 6px 0 10px; }
+  .sig-clear { position: absolute; top: 8px; right: 10px; background: none; border: none; color: #888; font-size: 0.78rem; cursor: pointer; padding: 4px 8px; border-radius: 4px; }
+  .sig-clear:hover { background: #f0f0f0; color: #333; }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 12px; margin-top: 24px; }
+  .btn { flex: 1; padding: 13px; border: none; border-radius: 9px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .btn-primary { background: #003d5c; color: white; }
+  .btn-primary:hover { background: #004f78; }
+  .btn-primary:disabled { background: #a0b4bf; cursor: not-allowed; }
+  .btn-secondary { background: #e8f0f5; color: #003d5c; }
+  .btn-secondary:hover { background: #d0e2ec; }
+  .btn-submit { background: #00a878; color: white; }
+  .btn-submit:hover { background: #008f66; }
+  .btn-submit:disabled { background: #a0c5bc; cursor: not-allowed; }
+
+  /* Acknowledgment checkbox */
+  .ack-row { display: flex; align-items: flex-start; gap: 12px; padding: 14px; background: #f8fbfd; border-radius: 8px; border: 1.5px solid #d0e8f0; margin: 16px 0; cursor: pointer; }
+  .ack-row input[type=checkbox] { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; accent-color: #003d5c; cursor: pointer; }
+  .ack-row label { font-size: 0.88rem; line-height: 1.5; cursor: pointer; }
+
+  /* Confirmation screen */
+  .confirm-icon { text-align: center; font-size: 3rem; margin-bottom: 12px; }
+  .confirm-box { text-align: center; }
+  .confirm-box h2 { color: #00a878; margin-bottom: 10px; }
+  .confirm-box p { color: #555; font-size: 0.92rem; line-height: 1.6; margin-bottom: 8px; }
+
+  /* Processing overlay */
+  #processing { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 100; align-items: center; justify-content: center; flex-direction: column; gap: 16px; color: white; font-size: 1rem; }
+  #processing.active { display: flex; }
+  .spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .required-star { color: #c0392b; }
+  .section-divider { border: none; border-top: 1px solid #e8f0f5; margin: 20px 0; }
+  .small-note { font-size: 0.78rem; color: #888; margin-top: 4px; }
+  .step { display: none; }
+  .step.active { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Kyalami Scuba Club</h1>
+  <p>Course Enrollment &amp; Waivers</p>
+</header>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+<div class="step-label" id="stepLabel">Getting Started</div>
+
+<div id="processing"><div class="spinner"></div><span id="processingMsg">Generating your packet…</span></div>
+
+<div class="container">
+
+  <!-- STEP 1: Course + Minor Selection -->
+  <div class="step active" id="step1">
+    <div class="card">
+      <h2>Select Your Course</h2>
+      <div class="form-group">
+        <label>Course <span class="required-star">*</span></label>
+        <select id="courseSelect">
+          <option value="">— Choose a course —</option>
+          <option value="discover-scuba">Discover Scuba Diving</option>
+          <option value="open-water">Open Water Diver</option>
+          <option value="advanced-open-water">Advanced Open Water Diver</option>
+          <option value="rescue">Rescue Diver</option>
+          <option value="refresher">Refresher / ReActivate</option>
+          <option value="nitrox">Enriched Air Nitrox</option>
+          <option value="divemaster">Divemaster</option>
+          <option value="private-guide">Private Guide (Fun Dive)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Is the participant under 18 years old? <span class="required-star">*</span></label>
+        <select id="minorSelect">
+          <option value="">— Select —</option>
+          <option value="no">No — Adult (18 or older)</option>
+          <option value="yes">Yes — Minor (under 18, parent/guardian required)</option>
+        </select>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="step1Next()">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: Participant Information -->
+  <div class="step" id="step2">
+    <div class="card">
+      <h2>Participant Information</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name <span class="required-star">*</span></label>
+          <input type="text" id="firstName" placeholder="First name">
+        </div>
+        <div class="form-group">
+          <label>Last Name <span class="required-star">*</span></label>
+          <input type="text" id="lastName" placeholder="Last name">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date of Birth <span class="required-star">*</span></label>
+          <input type="date" id="dob">
+        </div>
+        <div class="form-group">
+          <label>Sex <span class="required-star">*</span></label>
+          <select id="sex">
+            <option value="">— Select —</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Street Address <span class="required-star">*</span></label>
+        <input type="text" id="address" placeholder="Street address">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>City <span class="required-star">*</span></label>
+          <input type="text" id="city">
+        </div>
+        <div class="form-group">
+          <label>State / Province</label>
+          <input type="text" id="state">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Country <span class="required-star">*</span></label>
+          <input type="text" id="country" placeholder="e.g. USA">
+        </div>
+        <div class="form-group">
+          <label>Zip / Postal Code</label>
+          <input type="text" id="zip">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone <span class="required-star">*</span></label>
+          <input type="tel" id="phone" placeholder="Phone number">
+        </div>
+        <div class="form-group">
+          <label>Email <span class="required-star">*</span></label>
+          <input type="email" id="email" placeholder="Email address">
+        </div>
+      </div>
+      <hr class="section-divider">
+      <div class="form-group">
+        <label>Emergency Contact — Name <span class="required-star">*</span></label>
+        <input type="text" id="emergencyName" placeholder="Full name">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Emergency Contact — Phone <span class="required-star">*</span></label>
+          <input type="tel" id="emergencyPhone" placeholder="Phone number">
+        </div>
+        <div class="form-group">
+          <label>Relationship</label>
+          <input type="text" id="emergencyRelationship" placeholder="e.g. Spouse, Parent">
+        </div>
+      </div>
+      <div id="certFields" style="display:none">
+        <hr class="section-divider">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Current Certification Level</label>
+            <input type="text" id="certLevel" placeholder="e.g. Open Water">
+          </div>
+          <div class="form-group">
+            <label>Certification Number</label>
+            <input type="text" id="certNumber">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Certifying Agency</label>
+          <input type="text" id="certAgency" placeholder="e.g. PADI">
+        </div>
+      </div>
+      <div id="insuranceSection">
+        <hr class="section-divider">
+        <div class="form-group">
+          <label>Do you have Diver Accident Insurance? <span class="required-star">*</span></label>
+          <select id="hasInsurance">
+            <option value="">— Select —</option>
+            <option value="YES">Yes</option>
+            <option value="NO">No</option>
+          </select>
+        </div>
+        <div class="form-group" id="policyField" style="display:none">
+          <label>Insurance Policy Number</label>
+          <input type="text" id="policyNumber" placeholder="Policy number">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="showStep(1)">← Back</button>
+        <button class="btn btn-primary" onclick="step2Next()">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: Medical Questionnaire -->
+  <div class="step" id="step3">
+    <div class="card">
+      <h2>Diver Medical Questionnaire</h2>
+      <p style="font-size:0.87rem;color:#555;line-height:1.6;margin-bottom:16px;">
+        Recreational scuba diving requires good physical and mental health. Please answer all questions honestly.
+        If you answer <strong>NO</strong> to all questions below, no medical evaluation is required.
+        Questions marked <strong class="required-star">*</strong> require a physician evaluation if answered YES.
+      </p>
+
+      <div class="med-section">
+        <h3>Section 1 — General Health Screening</h3>
+        <div id="medPage2"></div>
+      </div>
+
+      <div id="page3Section" style="display:none">
+        <div class="alert alert-warn">
+          <strong>Additional questions required.</strong> Because you answered YES to one or more questions above, please complete the following detailed medical history. Your instructor can help you determine if a physician evaluation is required.
+        </div>
+        <div id="medPage3"></div>
+      </div>
+
+      <div id="medAllClearMsg" class="alert alert-info" style="display:none">
+        ✓ All questions answered NO — no medical evaluation required. Please sign and submit.
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="showStep(2)">← Back</button>
+        <button class="btn btn-primary" onclick="step3Next()">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: Sign & Acknowledge -->
+  <div class="step" id="step4">
+    <div class="card">
+      <h2>Review &amp; Sign</h2>
+
+      <p style="font-size:0.88rem;line-height:1.6;color:#444;margin-bottom:16px;">
+        By signing below you confirm that you have <strong>read and understood</strong> the complete
+        <span id="courseNameDisplay"></span> course packet, including:
+      </p>
+      <ul style="font-size:0.87rem;line-height:1.8;color:#444;padding-left:20px;margin-bottom:16px;">
+        <li>The Diver Medical Participant Questionnaire</li>
+        <li>The Release of Liability / Assumption of Risk agreement</li>
+        <li>All PADI standards and requirements for this course</li>
+      </ul>
+
+      <div id="medReqWarning" class="alert alert-danger" style="display:none">
+        ⚠️ <strong>Medical evaluation required.</strong> You answered YES to one or more questions that require a physician's evaluation before diving. Please consult your doctor and bring the completed physician form to your instructor before diving.
+      </div>
+
+      <div class="ack-row" onclick="toggleAck()">
+        <input type="checkbox" id="ackCheck">
+        <label for="ackCheck">I confirm I have read and understood the course packet, and I agree to all terms including the Release of Liability and Assumption of Risk. I understand that scuba diving involves inherent risks.</label>
+      </div>
+
+      <div class="form-group" style="margin-top:18px;">
+        <label>Today's Date</label>
+        <input type="date" id="signDate" readonly style="background:#f5f5f5;">
+      </div>
+
+      <div style="margin-top:18px;">
+        <label style="display:block;font-size:0.85rem;font-weight:600;color:#2a4a5e;margin-bottom:8px;">
+          Participant Signature <span class="required-star">*</span>
+          <span style="font-weight:400;color:#888;font-size:0.78rem;"> — Sign using your finger or mouse below</span>
+        </label>
+        <div class="sig-wrap">
+          <button class="sig-clear" onclick="clearSig('mainSig')">Clear</button>
+          <canvas id="mainSigCanvas" height="140"></canvas>
+        </div>
+        <p class="sig-label">Sign above</p>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-secondary" id="backFromSign" onclick="goBackFromSign()">← Back</button>
+        <button class="btn btn-submit" id="submitBtn" onclick="handleSubmitOrContinue()">Submit →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5: Parent / Guardian (minors only) -->
+  <div class="step" id="step5">
+    <div class="card">
+      <h2>Parent / Guardian Information</h2>
+      <p style="font-size:0.87rem;color:#555;margin-bottom:18px;">
+        Because the participant is under 18, a parent or guardian must provide their information and signature.
+      </p>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Parent / Guardian Name <span class="required-star">*</span></label>
+          <input type="text" id="parentName" placeholder="Full name">
+        </div>
+        <div class="form-group">
+          <label>Relationship to Minor <span class="required-star">*</span></label>
+          <input type="text" id="parentRelationship" placeholder="e.g. Mother, Father, Guardian">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Minor Child's Full Name <span class="required-star">*</span></label>
+        <input type="text" id="minorFullName" placeholder="As it will appear on their certification">
+      </div>
+      <div class="form-group">
+        <label>Minor Child's Date of Birth <span class="required-star">*</span></label>
+        <input type="date" id="minorDob">
+      </div>
+
+      <div class="ack-row" style="margin-top:14px;" onclick="toggleParentAck()">
+        <input type="checkbox" id="parentAckCheck">
+        <label for="parentAckCheck">I, as the parent or natural guardian of the above-named minor, have read and understand the course packet including the Florida Addendum and the Youth Diving: Responsibility and Risks acknowledgment. I consent to my child's participation.</label>
+      </div>
+
+      <div style="margin-top:18px;">
+        <label style="display:block;font-size:0.85rem;font-weight:600;color:#2a4a5e;margin-bottom:8px;">
+          Parent / Guardian Signature <span class="required-star">*</span>
+        </label>
+        <div class="sig-wrap">
+          <button class="sig-clear" onclick="clearSig('parentSig')">Clear</button>
+          <canvas id="parentSigCanvas" height="140"></canvas>
+        </div>
+        <p class="sig-label">Parent / Guardian — sign above</p>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="showStep(4)">← Back</button>
+        <button class="btn btn-submit" id="finalSubmitBtn" onclick="submitForm()">Submit Packet →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 6: Confirmation -->
+  <div class="step" id="step6">
+    <div class="card confirm-box">
+      <div class="confirm-icon">✅</div>
+      <h2>Packet Submitted!</h2>
+      <p>Thank you, <strong id="confirmName"></strong>. Your completed <strong id="confirmCourse"></strong> packet has been saved.</p>
+      <p id="medClearanceNote" style="color:#c0392b;font-weight:600;display:none;margin-top:12px;">
+        ⚠️ Remember: You indicated a medical condition requiring physician evaluation. Please bring your signed physician form to your first session.
+      </p>
+      <p style="margin-top:16px;color:#888;">Your instructor has been notified. See you in the water! 🤿</p>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- Load PDF-lib and SignaturePad from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/4.1.7/signature_pad.umd.min.js"></script>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// CONFIGURATION — Edit these before deploying
+// ─────────────────────────────────────────────────────────────────────────────
+const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE'; // Replace after deploying Apps Script
+const PDF_BASE_PATH   = 'pdfs/'; // Relative path to PDF files folder
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COURSE DEFINITIONS
+// ─────────────────────────────────────────────────────────────────────────────
+const COURSES = {
+  'discover-scuba':      { name: 'Discover Scuba Diving',        file: 'Discover Scuba Diving Packet (1).pdf',    hasMedical: true,  hasInsurance: true,  sigType: 'named' },
+  'open-water':          { name: 'Open Water Diver',             file: 'Open Water Packet (1).pdf',               hasMedical: true,  hasInsurance: true,  sigType: 'named' },
+  'advanced-open-water': { name: 'Advanced Open Water Diver',    file: 'Advanced Open Water Packet (1).pdf',      hasMedical: true,  hasInsurance: true,  sigType: 'coords' },
+  'rescue':              { name: 'Rescue Diver',                 file: 'Rescue Packet (1).pdf',                   hasMedical: true,  hasInsurance: true,  sigType: 'coords' },
+  'refresher':           { name: 'Refresher / ReActivate',       file: 'Refresher ReActivate Packet (1).pdf',     hasMedical: true,  hasInsurance: true,  sigType: 'coords' },
+  'nitrox':              { name: 'Enriched Air Nitrox',          file: 'Enriched Air Nitrox Packet (1).pdf',      hasMedical: false, hasInsurance: true,  sigType: 'coords' },
+  'divemaster':          { name: 'Divemaster',                   file: 'Divemaster Packet (1).pdf',               hasMedical: true,  hasInsurance: true,  sigType: 'named' },
+  'private-guide':       { name: 'Private Guide (Fun Dive)',     file: 'Private Guide Packet (1).pdf',            hasMedical: false, hasInsurance: true,  sigType: 'coords' },
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MEDICAL QUESTIONNAIRE — PAGE 2 (10 questions)
+// ─────────────────────────────────────────────────────────────────────────────
+const MED_P2 = [
+  { text: 'I have had problems with my lungs, breathing, heart and/or blood affecting my normal physical or mental performance.',                                                      reqPhysician: false, triggerBox: 'A' },
+  { text: 'I am over 45 years of age.',                                                                                                                                                reqPhysician: false, triggerBox: 'B' },
+  { text: 'I struggle to perform moderate exercise (walk 1.6 km/1 mile in 14 min, swim 200m without resting), or I have been unable to participate in normal physical activity due to fitness or health reasons within the past 12 months.', reqPhysician: true  },
+  { text: 'I have had problems with my eyes, ears, or nasal passages/sinuses or teeth.',                                                                                               reqPhysician: false, triggerBox: 'C' },
+  { text: 'I have had surgery within the last 12 months, or I have ongoing problems related to past surgery.',                                                                         reqPhysician: true  },
+  { text: 'I have lost consciousness, had migraine headaches, seizures, stroke, significant head injury, or suffer from persistent neurologic injury or disease. I have a condition where sudden neurological compromise/impairment is possible.', reqPhysician: false, triggerBox: 'D' },
+  { text: 'I am currently undergoing treatment (or have required treatment within the last five years) for psychological problems, personality disorder, panic attacks, or an addiction to drugs or alcohol; or I have been diagnosed with a learning or developmental disability.', reqPhysician: false, triggerBox: 'E' },
+  { text: 'I have had back problems, hernia, ulcers, or diabetes.',                                                                                                                    reqPhysician: false, triggerBox: 'F' },
+  { text: 'I have had stomach or intestine problems, including recent diarrhea.',                                                                                                       reqPhysician: false, triggerBox: 'G' },
+  { text: 'I am currently taking one or more prescription medications. (Note: this need not include birth control, menopausal hormone replacement, and antimalarial medication unless it is mefloquine [Lariam]).',                               reqPhysician: true  },
+];
+
+// PDF field pairs for page 2 (Yes/No checkboxes)
+const MED_P2_FIELDS = [
+  { yes: 'Yes',   no: 'No'    },
+  { yes: 'Yes_2', no: 'No_2'  },
+  { yes: 'Yes_3', no: 'No_3'  },
+  { yes: 'Yes_4', no: 'No_4'  },
+  { yes: 'Yes_5', no: 'No_5'  },
+  { yes: 'Yes_6', no: 'No_6'  },
+  { yes: 'Si',    no: 'No_7'  }, // Q7 uses 'Si' in the PDF (known anomaly)
+  { yes: 'Yes_7', no: 'No_8'  },
+  { yes: 'Yes_8', no: 'No_9'  },
+  { yes: 'Yes_9', no: 'No_10' },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MEDICAL QUESTIONNAIRE — PAGE 3 (boxes A–G)
+// ─────────────────────────────────────────────────────────────────────────────
+const MED_P3_BOXES = [
+  { label: 'BOX A — I HAVE/HAVE HAD (Chest/Lung/Heart)', questions: [
+    'Chest surgery, heart surgery, heart valve surgery, an implantable medical device (e.g. stent, pacemaker, neurostimulator), pneumothorax, and/or chronic lung disease.',
+    'Asthma, wheezing, severe allergies, hay fever or congested airways within the last 12 months that limits my physical activity/exercise.',
+    'A problem or illness involving my heart such as: angina, chest pain on exertion, heart failure, immersion pulmonary edema, heart attack or stroke, or am taking medication for any heart condition.',
+    'Recurrent bronchitis and currently coughing within the past 12 months, or have been diagnosed with emphysema.',
+    'Symptoms affecting my lungs, breathing, heart and/or blood in the last 30 days that impair my physical or mental performance.',
+  ]},
+  { label: 'BOX B — I AM OVER 45 YEARS OF AGE AND', questions: [
+    'I currently smoke or inhale nicotine by other means.',
+    'I have a high cholesterol level.',
+    'I have high blood pressure.',
+  ]},
+  { label: 'BOX C — I HAVE/HAVE HAD (Eyes/Ears/Sinuses)', questions: [
+    'Sinus surgery within the last 6 months.',
+    'Ear disease or ear surgery, hearing loss, or problems with balance.',
+    'Recurrent sinusitis within the past 12 months.',
+    'Eye surgery within the past 3 months.',
+    'Still healing / recovering from recent dental / oral procedure.',
+  ]},
+  { label: 'BOX D — I HAVE/HAVE HAD (Neurological)', questions: [
+    'Head injury with loss of consciousness within the past 5 years.',
+    'Persistent neurologic injury or disease, to include episodic and/or unpredictable loss, reduction, or change in neurological, cognitive, or motor function or performance.',
+    'Recurring migraine headaches within the past 12 months, or take medications to prevent them.',
+    'Blackouts or fainting (full/partial loss of consciousness) within the last 5 years.',
+  ]},
+  { label: 'BOX E — I HAVE/HAVE HAD (Mental Health)', questions: [
+    'Behavioral health, mental, or psychological problems requiring medical/psychiatric treatment.',
+    'Major depression, suicidal ideation, panic attacks, uncontrolled bipolar disorder requiring medication/psychiatric treatment.',
+    'Been diagnosed with a mental health condition or a learning/developmental disorder that requires ongoing care or special accommodation.',
+    'An addiction to drugs or alcohol requiring treatment within the last 5 years.',
+  ]},
+  { label: 'BOX F — I HAVE/HAVE HAD (Back/Diabetes/Hernia)', questions: [
+    'Recurrent back problems in the last 6 months that limit my everyday activity.',
+    'Back or spinal surgery within the last 12 months.',
+    'Diabetes, either drug or diet controlled, or gestational diabetes within the last 12 months.',
+    'An uncorrected hernia that limits my physical abilities.',
+    'Active or untreated ulcers, problem wounds, or ulcer surgery within the last 6 months.',
+  ]},
+  { label: 'BOX G — I HAVE HAD (Digestive)', questions: [
+    'Ostomy surgery and do not have medical clearance to swim or engage in physical activity.',
+    'Dehydration requiring medical intervention within the last 7 days.',
+    'Active or untreated stomach or intestinal ulcers or ulcer surgery within the last 6 months.',
+    'Frequent heartburn, regurgitation, or gastroesophageal reflux disease (GERD).',
+    'Active or uncontrolled ulcerative colitis or Crohn\'s disease.',
+    'Bariatric surgery within the last 12 months.',
+  ]},
+];
+
+// PDF field pairs for page 3 (in y-order, per verified PDF inspection)
+// undefined/undefined_2 (y=237) and undefined_3/undefined_4 (y=431) are section breaks — skipped
+const MED_P3_FIELDS = [
+  // Box A
+  { yes: 'Yes_10', no: 'No_11' },
+  { yes: 'Yes_11', no: 'No_12' },
+  { yes: 'Yes_12', no: 'No_13' },
+  { yes: 'Yes_13', no: 'No_14' },
+  { yes: 'Yes_14', no: 'No_15' },
+  // Box B (Yes_15 is the undefined/section break; fields restart at Yes_16)
+  { yes: 'Yes_16', no: 'No_17' },
+  { yes: 'Yes_17', no: 'No_18' },
+  { yes: 'Yes_18', no: 'No_19' },
+  // Box C
+  { yes: 'Yes_19', no: 'No_20' },
+  { yes: 'Yes_20', no: 'No_21' },
+  { yes: 'Yes_21', no: 'No_22' },
+  { yes: 'Yes_22', no: 'No_23' }, // first Yes_22 (duplicate field name in PDF — known issue)
+  { yes: 'Yes_22', no: 'No_23' }, // second Yes_22 (pdf-lib fills first; minor limitation)
+  // Box D (undefined_3/undefined_4 at y=431 is section break; fields restart at Yes_24)
+  { yes: 'Yes_24', no: 'No_25' },
+  { yes: 'Yes_25', no: 'No_26' },
+  { yes: 'Yes_26', no: 'No_27' },
+  { yes: 'Yes_27', no: 'No_28' },
+  // Box E
+  { yes: 'Yes_28', no: 'No_29' },
+  { yes: 'Yes_29', no: 'No_30' },
+  { yes: 'Yes_30', no: 'No_31' },
+  { yes: 'Yes_31', no: 'No_32' },
+  // Box F
+  { yes: 'Yes_32', no: 'No_33' },
+  { yes: 'Yes_33', no: 'No_34' },
+  { yes: 'Yes_34', no: 'No_35' },
+  { yes: 'Yes_35', no: 'No_36' },
+  { yes: 'Yes_45', no: 'No_50' }, // anomalous field names in the PDF — correct as-is
+  // Box G
+  { yes: 'Yes_37', no: 'No_38' },
+  { yes: 'Yes_38', no: 'No_39' },
+  { yes: 'Yes_39', no: 'No_40' },
+  { yes: 'Yes_40', no: 'No_41' },
+  { yes: 'Yes_41', no: 'No_42' },
+  { yes: 'Yes_42', no: 'No_43' },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────────────────────
+let state = {
+  currentStep: 1,
+  course: null,
+  isMinor: false,
+  medAnswersP2: new Array(10).fill(null),   // null | 'yes' | 'no'
+  medAnswersP3: [],                          // flat array, filled when page 3 shown
+  needsPhysician: false,
+  needsPage3: false,
+  mainSigPad: null,
+  parentSigPad: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STEP NAVIGATION
+// ─────────────────────────────────────────────────────────────────────────────
+const STEP_LABELS = ['', 'Select Course', 'Your Information', 'Medical Questionnaire', 'Sign & Submit', 'Parent / Guardian', 'Complete'];
+const TOTAL_STEPS = 6;
+
+function showStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  state.currentStep = n;
+  const pct = Math.round(((n - 1) / (TOTAL_STEPS - 1)) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('stepLabel').textContent = STEP_LABELS[n] || '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function step1Next() {
+  const course = document.getElementById('courseSelect').value;
+  const minor  = document.getElementById('minorSelect').value;
+  if (!course || !minor) { alert('Please select a course and indicate if the participant is under 18.'); return; }
+  state.course   = course;
+  state.isMinor  = (minor === 'yes');
+  // Show/hide cert fields for relevant courses
+  const certCourses = ['private-guide', 'rescue', 'advanced-open-water', 'divemaster', 'nitrox', 'refresher'];
+  document.getElementById('certFields').style.display = certCourses.includes(course) ? 'block' : 'none';
+  showStep(2);
+}
+
+function step2Next() {
+  const req = ['firstName','lastName','dob','sex','address','city','country','phone','email','emergencyName','emergencyPhone'];
+  for (const id of req) {
+    if (!document.getElementById(id).value.trim()) {
+      alert('Please fill in all required fields.');
+      document.getElementById(id).focus();
+      return;
+    }
+  }
+  if (!document.getElementById('hasInsurance').value) { alert('Please indicate whether you have diver accident insurance.'); return; }
+  const course = COURSES[state.course];
+  if (course.hasMedical) {
+    buildMedicalForm();
+    showStep(3);
+  } else {
+    prepareSignStep();
+    showStep(4);
+  }
+}
+
+function step3Next() {
+  // Validate all page 2 questions answered
+  for (let i = 0; i < 10; i++) {
+    if (state.medAnswersP2[i] === null) {
+      alert('Please answer all 10 questions in Section 1 before continuing.');
+      return;
+    }
+  }
+  // Check if page 3 is visible and validate
+  if (state.needsPage3) {
+    const total = MED_P3_FIELDS.length;
+    for (let i = 0; i < total; i++) {
+      if ((state.medAnswersP3[i] === undefined || state.medAnswersP3[i] === null)) {
+        alert('Please answer all questions in the additional medical sections.');
+        return;
+      }
+    }
+    // Check if physician required (any * question answered yes)
+    const reqYes = state.medAnswersP2.some((ans, i) => ans === 'yes' && MED_P2[i].reqPhysician);
+    const p3Yes  = state.medAnswersP3.some(a => a === 'yes');
+    state.needsPhysician = reqYes || p3Yes;
+  }
+  prepareSignStep();
+  showStep(4);
+}
+
+function prepareSignStep() {
+  document.getElementById('courseNameDisplay').textContent = COURSES[state.course].name;
+  document.getElementById('signDate').value = new Date().toISOString().split('T')[0];
+  if (state.needsPhysician) {
+    document.getElementById('medReqWarning').style.display = 'block';
+  }
+  // Update submit button label based on minor status
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = state.isMinor ? 'Continue → Parent Signature' : 'Submit Packet →';
+  // Init signature pad
+  setTimeout(() => initSigPad('mainSigCanvas', 'mainSig'), 100);
+}
+
+function goBackFromSign() {
+  if (COURSES[state.course].hasMedical) showStep(3); else showStep(2);
+}
+
+function handleSubmitOrContinue() {
+  if (!document.getElementById('ackCheck').checked) { alert('Please check the acknowledgment checkbox before proceeding.'); return; }
+  if (!state.mainSigPad || state.mainSigPad.isEmpty()) { alert('Please provide your signature before proceeding.'); return; }
+  if (state.isMinor) {
+    // Init parent sig pad
+    setTimeout(() => initSigPad('parentSigCanvas', 'parentSig'), 100);
+    // Pre-fill minor name from participant name
+    const fullName = document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value;
+    document.getElementById('minorFullName').value = fullName;
+    document.getElementById('minorDob').value = document.getElementById('dob').value;
+    showStep(5);
+  } else {
+    submitForm();
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MEDICAL QUESTIONNAIRE UI
+// ─────────────────────────────────────────────────────────────────────────────
+function buildMedicalForm() {
+  // Page 2
+  const p2 = document.getElementById('medPage2');
+  p2.innerHTML = '';
+  MED_P2.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'med-question';
+    div.innerHTML = `
+      <p>${i+1}. ${q.text}${q.reqPhysician ? '<span class="req-flag">*</span>' : ''}</p>
+      <div class="yn-buttons">
+        <button class="yn-btn" id="p2q${i}yes" onclick="setMedP2(${i},'yes')">YES</button>
+        <button class="yn-btn" id="p2q${i}no"  onclick="setMedP2(${i},'no')">NO</button>
+      </div>`;
+    p2.appendChild(div);
+  });
+
+  // Page 3 — build all boxes
+  const p3 = document.getElementById('medPage3');
+  p3.innerHTML = '';
+  let fieldIdx = 0;
+  MED_P3_BOXES.forEach((box, bi) => {
+    const sec = document.createElement('div');
+    sec.className = 'med-section';
+    sec.innerHTML = `<h3>${box.label}</h3>`;
+    box.questions.forEach((q, qi) => {
+      const globalIdx = fieldIdx;
+      const div = document.createElement('div');
+      div.className = 'med-question';
+      div.innerHTML = `
+        <p>${q}</p>
+        <div class="yn-buttons">
+          <button class="yn-btn" id="p3q${globalIdx}yes" onclick="setMedP3(${globalIdx},'yes')">YES</button>
+          <button class="yn-btn" id="p3q${globalIdx}no"  onclick="setMedP3(${globalIdx},'no')">NO</button>
+        </div>`;
+      sec.appendChild(div);
+      fieldIdx++;
+    });
+    p3.appendChild(sec);
+  });
+  // Init page 3 answers array
+  state.medAnswersP3 = new Array(fieldIdx).fill(null);
+}
+
+function setMedP2(idx, val) {
+  state.medAnswersP2[idx] = val;
+  document.getElementById('p2q'+idx+'yes').className = 'yn-btn' + (val==='yes'?' yes-active':'');
+  document.getElementById('p2q'+idx+'no').className  = 'yn-btn' + (val==='no'?' no-active':'');
+  // Check if page 3 is needed
+  const needP3 = state.medAnswersP2.some((a, i) => a === 'yes' && MED_P2[i].triggerBox);
+  state.needsPage3 = needP3;
+  document.getElementById('page3Section').style.display = needP3 ? 'block' : 'none';
+  const allNo = state.medAnswersP2.every(a => a === 'no');
+  document.getElementById('medAllClearMsg').style.display = allNo ? 'block' : 'none';
+}
+
+function setMedP3(idx, val) {
+  state.medAnswersP3[idx] = val;
+  document.getElementById('p3q'+idx+'yes').className = 'yn-btn' + (val==='yes'?' yes-active':'');
+  document.getElementById('p3q'+idx+'no').className  = 'yn-btn' + (val==='no'?' no-active':'');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SIGNATURE PAD
+// ─────────────────────────────────────────────────────────────────────────────
+function initSigPad(canvasId, storeKey) {
+  const canvas = document.getElementById(canvasId);
+  const ratio  = Math.max(window.devicePixelRatio || 1, 1);
+  canvas.width  = canvas.offsetWidth  * ratio;
+  canvas.height = canvas.height       * ratio;
+  canvas.getContext('2d').scale(ratio, ratio);
+  const pad = new SignaturePad(canvas, { backgroundColor: 'rgba(255,255,255,0)', penColor: '#003d5c' });
+  if (storeKey === 'mainSig')   state.mainSigPad   = pad;
+  if (storeKey === 'parentSig') state.parentSigPad = pad;
+}
+
+function clearSig(key) {
+  if (key === 'mainSig'   && state.mainSigPad)   state.mainSigPad.clear();
+  if (key === 'parentSig' && state.parentSigPad) state.parentSigPad.clear();
+}
+
+function toggleAck()       { document.getElementById('ackCheck').click(); }
+function toggleParentAck() { document.getElementById('parentAckCheck').click(); }
+
+document.getElementById('hasInsurance').addEventListener('change', function() {
+  document.getElementById('policyField').style.display = this.value === 'YES' ? 'block' : 'none';
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FORM SUBMISSION — Generate PDF and send to Apps Script
+// ─────────────────────────────────────────────────────────────────────────────
+async function submitForm() {
+  if (state.isMinor) {
+    if (!document.getElementById('parentAckCheck').checked) { alert('Parent/guardian must check the acknowledgment.'); return; }
+    if (!document.getElementById('parentName').value.trim()) { alert('Please enter the parent/guardian name.'); return; }
+    if (!state.parentSigPad || state.parentSigPad.isEmpty()) { alert('Parent/guardian signature is required.'); return; }
+  }
+
+  showProcessing('Loading course packet…');
+
+  try {
+    const courseKey = state.course;
+    const course    = COURSES[courseKey];
+    const pdfUrl    = PDF_BASE_PATH + course.file;
+
+    // Fetch the original PDF
+    const pdfRes   = await fetch(pdfUrl);
+    if (!pdfRes.ok) throw new Error('Could not load the course packet PDF. Make sure PDF files are in the pdfs/ folder.');
+    const pdfBytes = await pdfRes.arrayBuffer();
+
+    showProcessing('Filling out your packet…');
+
+    const { PDFDocument, rgb } = PDFLib;
+    const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+    const form   = pdfDoc.getForm();
+    const pages  = pdfDoc.getPages();
+
+    // Collect all form data
+    const data = collectFormData();
+
+    // Fill common text fields
+    setTextField(form, 'Participant Name Print',         data.fullName);
+    setTextField(form, 'Birthdate ddmmyyyy',             formatDateDMY(data.dob));
+    setTextField(form, 'Participant',                    data.fullName); // text-type "signature" on p2
+    setTextField(form, 'Date ddmmyyyy',                  formatDateDMY(data.today));
+    setTextField(form, 'Participant Name',               data.fullName); // p3 header
+    setTextField(form, 'Birthdate',                      formatDateDMY(data.dob));
+
+    // Liability pages — participant name fields
+    ['Participant Name 1','Participant Name 2','Participant Name 3','Participant Name 4'].forEach(f => setTextField(form, f, data.fullName));
+    setTextField(form, 'Participant Name PLEASE PRINT',  data.fullName);
+    setAllTextFields(form, 'Participant Name',           data.fullName);
+    setTextField(form, 'Text1', data.fullName);
+    setTextField(form, 'Text2', data.fullName);
+    setTextField(form, 'PRINT NAME', data.fullName);
+
+    // Date fields on liability pages
+    const today = formatDateDMY(data.today);
+    ['DateDay/Month/Year 1','Date DayMonthYear 2','Date DayMonthYear','Date DayMonthYear_2'].forEach(f => setTextField(form, f, today));
+    ['Date Day  Month  Year','Date Day  Month  Year_2'].forEach(f => setTextField(form, f, today));
+
+    // Divemaster specific
+    setTextField(form, 'Name',            data.fullName);
+    setTextField(form, 'Address',         data.address);
+    setTextField(form, 'City',            data.city);
+    setTextField(form, 'StateProvince',   data.state);
+    setTextField(form, 'Country',         data.country);
+    setTextField(form, 'ZipPostal Code',  data.zip);
+    setTextField(form, 'Phone',           data.phone);
+    setTextField(form, 'Email',           data.email);
+    setTextField(form, 'Birth Date',      formatDateDMY(data.dob));
+
+    // Private Guide uses "Diver Name"
+    setTextField(form, 'Diver Name',   data.fullName);
+    setTextField(form, 'Diver Name 2', data.fullName);
+
+    // Insurance
+    const insYes = data.insurance === 'YES';
+    setRadio(form, 'Diver Accident Insurance', insYes ? 'YES' : 'NO');
+    setRadio(form, 'No/Yes', insYes ? 'Yes' : 'No');
+    if (insYes && data.policyNumber) {
+      setTextField(form, 'Policy Number', data.policyNumber);
+    }
+
+    // Minor fields
+    if (state.isMinor) {
+      const parentName = document.getElementById('parentName').value.trim();
+      const minorName  = document.getElementById('minorFullName').value.trim();
+      const minorDob   = document.getElementById('minorDob').value;
+      setTextField(form, 'Minor Child Name',        minorName);
+      setTextField(form, 'Birth Date DayMonthYear', formatDateDMY(minorDob));
+      setTextField(form, 'ParentGuardian Name',     parentName);
+      setTextField(form, 'ParticipantMinor Name',   minorName);
+      setTextField(form, 'DayMonthYear',            today);
+      setTextField(form, 'DayMonthYear_2',          today);
+      setTextField(form, 'Date DayMonthYear',       today);
+    }
+
+    // Medical questionnaire checkboxes
+    if (course.hasMedical) {
+      MED_P2_FIELDS.forEach((pair, i) => {
+        const ans = state.medAnswersP2[i];
+        if (ans === 'yes') checkBox(form, pair.yes);
+        else               checkBox(form, pair.no);
+      });
+      if (state.needsPage3) {
+        let fieldIdx = 0;
+        MED_P3_BOXES.forEach(box => {
+          box.questions.forEach((_, qi) => {
+            const pair = MED_P3_FIELDS[fieldIdx];
+            const ans  = state.medAnswersP3[fieldIdx];
+            if (pair && ans === 'yes') checkBox(form, pair.yes);
+            else if (pair)            checkBox(form, pair.no);
+            fieldIdx++;
+          });
+        });
+      } else {
+        // Check all page 3 as NO (unanswered = no)
+        MED_P3_FIELDS.forEach(pair => checkBox(form, pair.no));
+      }
+    }
+
+    // ── Signatures ──────────────────────────────────────────────────────────
+    showProcessing('Applying your signature…');
+    const sigDataURL    = state.mainSigPad.toDataURL('image/png');
+    const sigImageBytes = dataURLToBytes(sigDataURL);
+    const sigImage      = await pdfDoc.embedPng(sigImageBytes);
+    const parentSigDataURL = state.isMinor ? state.parentSigPad.toDataURL('image/png') : null;
+
+    // Stamp signatures based on course type
+    await stampSignatures(pdfDoc, form, pages, sigImage, parentSigDataURL ? await pdfDoc.embedPng(dataURLToBytes(parentSigDataURL)) : null, courseKey);
+
+    // Flatten form
+    form.flatten();
+
+    // Serialize
+    showProcessing('Sending your packet…');
+    const finalBytes = await pdfDoc.save();
+    const base64     = uint8ToBase64(finalBytes);
+
+    // Send to Apps Script
+    const payload = {
+      pdf:         base64,
+      course:      course.name,
+      studentName: data.fullName,
+      dob:         data.dob,
+      email:       data.email,
+      date:        data.today,
+      isMinor:     state.isMinor,
+    };
+    await sendToAppsScript(payload);
+
+    // Confirmation
+    document.getElementById('confirmName').textContent   = data.fullName;
+    document.getElementById('confirmCourse').textContent = course.name;
+    if (state.needsPhysician) document.getElementById('medClearanceNote').style.display = 'block';
+    hideProcessing();
+    showStep(6);
+
+  } catch (err) {
+    hideProcessing();
+    console.error(err);
+    alert('Something went wrong: ' + err.message + '\n\nPlease try again or contact your instructor.');
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SIGNATURE STAMPING
+// ─────────────────────────────────────────────────────────────────────────────
+async function stampSignatures(pdfDoc, form, pages, sigImage, parentSigImage, courseKey) {
+  // Helper: stamp image at a named Signature-type field location, then remove the field
+  function stampAtNamedField(fieldName) {
+    try {
+      const field   = form.getField(fieldName);
+      const widgets = field.acroField.getWidgets();
+      if (!widgets.length) return;
+      const widget = widgets[0];
+      const pageRef = widget.P();
+      const pageIdx = pdfDoc.getPages().findIndex(p => p.ref === pageRef);
+      if (pageIdx < 0) return;
+      const page = pdfDoc.getPages()[pageIdx];
+      const rect = widget.getRectangle();
+      page.drawImage(sigImage, { x: rect.x, y: rect.y, width: rect.width, height: rect.height });
+      form.removeField(field);
+    } catch (e) { /* field not found — skip */ }
+  }
+
+  // Helper: stamp image at fixed coordinates (for packets without Signature-type fields)
+  // coords: { pageIdx, x, y, w, h } — pdf-lib coordinate system (y=0 at bottom)
+  function stampAtCoords(page, x, y, w, h, img) {
+    page.drawImage(img, { x, y, width: w, height: h });
+  }
+
+  switch (courseKey) {
+    case 'discover-scuba':
+    case 'divemaster':
+      stampAtNamedField('Participants Signature');
+      if (state.isMinor && parentSigImage) stampAtNamedField('Signature of Parent or Guardian where applicable');
+      break;
+
+    case 'open-water':
+      stampAtNamedField('Participants Signature');
+      if (state.isMinor && parentSigImage) stampAtNamedField('Signature of Parent or Guardian where applicable');
+      stampAtNamedField('Student Signature');
+      break;
+
+    case 'advanced-open-water': {
+      // No named participant sig field — stamp at bottom of page 6 (waiver sign page, 0-indexed = 5)
+      // Page dims: 612x792. Waiver signature area ~ bottom of page 6.
+      // (x=34, y=792-750=42 in pdf-lib coords) wide=400pt
+      const p6 = pages[5];
+      stampAtCoords(p6, 34, 45, 380, 30, sigImage);
+      if (state.isMinor && parentSigImage) {
+        const p9 = pages[8]; // minor consent page
+        stampAtCoords(p9, 34, 45, 380, 30, parentSigImage);
+      }
+      break;
+    }
+
+    case 'rescue':
+    case 'refresher': {
+      // Page 6 (index 5) is the main waiver signature page
+      // DateDay/Month/Year 1 is at [459,707,583,721] in PyMuPDF coords → pdf-lib y = 792-721=71
+      // Signature goes to the left of the date, same row
+      const sigPage = pages[5];
+      stampAtCoords(sigPage, 34, 68, 380, 30, sigImage);
+      if (state.isMinor && parentSigImage) {
+        const minorPage = pages[8]; // minor consent page (index 8)
+        stampAtCoords(minorPage, 34, 45, 380, 30, parentSigImage);
+      }
+      break;
+    }
+
+    case 'nitrox': {
+      // Page 2 (index 1) is the main liability page; page 5 (index 4) has the knowledge review sig
+      const mainPage = pages[1];
+      stampAtCoords(mainPage, 34, 45, 380, 30, sigImage);
+      // Knowledge review signature on page 5
+      const kqPage = pages[4];
+      stampAtCoords(kqPage, 34, 45, 380, 30, sigImage);
+      break;
+    }
+
+    case 'private-guide': {
+      // Page 3 (index 2) has the main waiver signature area
+      const pg = pages[2];
+      stampAtCoords(pg, 34, 68, 380, 30, sigImage);
+      if (state.isMinor && parentSigImage) {
+        const minorPage = pages[4]; // Florida addendum (index 4)
+        stampAtCoords(minorPage, 34, 45, 380, 30, parentSigImage);
+      }
+      break;
+    }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PDF HELPER UTILITIES
+// ─────────────────────────────────────────────────────────────────────────────
+function setTextField(form, name, value) {
+  try { form.getTextField(name).setText(value || ''); } catch(e) {}
+}
+
+// Sets ALL fields matching a name (handles duplicate field names like Store/resort x3)
+function setAllTextFields(form, name, value) {
+  try {
+    form.getFields().filter(f => f.getName() === name).forEach(f => {
+      try { f.setText(value || ''); } catch(e) {}
+    });
+  } catch(e) {}
+}
+
+function checkBox(form, name) {
+  try { form.getCheckBox(name).check(); } catch(e) {}
+}
+
+function setRadio(form, groupName, value) {
+  try { form.getRadioGroup(groupName).select(value); } catch(e) {}
+}
+
+function collectFormData() {
+  return {
+    fullName:    (document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value).trim(),
+    dob:         document.getElementById('dob').value,
+    sex:         document.getElementById('sex').value,
+    address:     document.getElementById('address').value,
+    city:        document.getElementById('city').value,
+    state:       document.getElementById('state').value,
+    country:     document.getElementById('country').value,
+    zip:         document.getElementById('zip').value,
+    phone:       document.getElementById('phone').value,
+    email:       document.getElementById('email').value,
+    insurance:   document.getElementById('hasInsurance').value,
+    policyNumber:document.getElementById('policyNumber').value,
+    today:       new Date().toISOString().split('T')[0],
+  };
+}
+
+function formatDateDMY(isoDate) {
+  if (!isoDate) return '';
+  const [y, m, d] = isoDate.split('-');
+  return d + '/' + m + '/' + y;
+}
+
+function dataURLToBytes(dataURL) {
+  const base64 = dataURL.split(',')[1];
+  const bin    = atob(base64);
+  const bytes  = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return bytes;
+}
+
+function uint8ToBase64(uint8Array) {
+  let bin = '';
+  const chunk = 8192;
+  for (let i = 0; i < uint8Array.length; i += chunk) {
+    bin += String.fromCharCode.apply(null, uint8Array.subarray(i, i + chunk));
+  }
+  return btoa(bin);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// APPS SCRIPT SUBMISSION
+// ─────────────────────────────────────────────────────────────────────────────
+async function sendToAppsScript(payload) {
+  if (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    console.warn('Apps Script URL not configured — PDF not saved to Drive. Download locally instead.');
+    // For testing: trigger local download
+    triggerDownload(payload.pdf, payload.studentName + ' — ' + payload.course + '.pdf');
+    return;
+  }
+  const res = await fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: { 'Content-Type': 'application/json' },
+  });
+  if (!res.ok) throw new Error('Server error: ' + res.status);
+  const json = await res.json();
+  if (json.status !== 'ok') throw new Error(json.message || 'Unknown server error');
+}
+
+function triggerDownload(base64, filename) {
+  const link = document.createElement('a');
+  link.href     = 'data:application/pdf;base64,' + base64;
+  link.download = filename;
+  link.click();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PROCESSING OVERLAY
+// ─────────────────────────────────────────────────────────────────────────────
+function showProcessing(msg) {
+  document.getElementById('processingMsg').textContent = msg || 'Processing…';
+  document.getElementById('processing').classList.add('active');
+}
+function hideProcessing() {
+  document.getElementById('processing').classList.remove('active');
+}
+
+// Init
+document.getElementById('signDate').value = new Date().toISOString().split('T')[0];
+</script>
+</body>
+</html>
