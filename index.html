@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kyalami Scuba Club — Course Packet</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f0f4f8; color: #1a2332; min-height: 100vh;
+}
+header {
+  background: #003366; color: white; padding: 12px 20px;
+  display: flex; align-items: center; gap: 10px;
+  position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+header h1 { font-size: 1rem; font-weight: 600; }
+header span { font-size: 0.78rem; opacity: 0.7; margin-left: auto; }
+
+/* ── Progress ─────────────────────────────────────── */
+.progress-bar {
+  display: flex; background: #002244; padding: 8px 16px; gap: 4px; overflow-x: auto;
+}
+.progress-bar button {
+  background: none; border: none; color: rgba(255,255,255,0.4);
+  font-size: 0.7rem; cursor: default; white-space: nowrap;
+  padding: 3px 8px; border-radius: 20px; font-family: inherit;
+}
+.progress-bar button.done { color: #7dd8a0; }
+.progress-bar button.active { color: white; background: rgba(255,255,255,0.2); }
+
+/* ── Steps ─────────────────────────────────────────── */
+.step { display: none; max-width: 800px; margin: 0 auto; padding: 20px 16px 60px; }
+.step.active { display: block; }
+
+h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; color: #003366; }
+.subtitle { color: #5a6a7a; font-size: 0.88rem; margin-bottom: 18px; }
+
+.card { background: white; border-radius: 12px; padding: 18px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+h3 { font-size: 0.95rem; font-weight: 600; color: #003366; margin: 16px 0 10px; }
+
+/* ── Course buttons ─────────────────────────────────── */
+.course-btn {
+  display: flex; align-items: center; gap: 14px; width: 100%;
+  padding: 16px 18px; background: white; border: 2px solid #e0e8f0;
+  border-radius: 12px; cursor: pointer; text-align: left; margin-bottom: 10px;
+  transition: all 0.15s; font-family: inherit;
+}
+.course-btn:hover:not([disabled]) { border-color: #003366; background: #f0f5fb; }
+.course-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+.course-btn .icon { font-size: 1.6rem; flex-shrink: 0; }
+.course-btn .title { font-weight: 600; font-size: 0.92rem; }
+.course-btn .desc { font-size: 0.78rem; color: #7a8a9a; margin-top: 2px; }
+.badge { margin-left:auto; font-size:0.68rem; padding:3px 8px; border-radius:20px; font-weight:600; white-space:nowrap; flex-shrink:0; }
+.badge.avail { background:#e8f5e9; color:#2e7d32; }
+.badge.soon  { background:#f5f5f5; color:#9e9e9e; }
+
+/* ── Form fields ─────────────────────────────────────── */
+.form-row { margin-bottom: 12px; }
+.form-row label { display:block; font-size:0.76rem; font-weight:600; color:#4a5a6a; margin-bottom:4px; text-transform:uppercase; letter-spacing:.03em; }
+.req { color: #e53935; }
+.form-row input {
+  width:100%; padding:9px 11px; border:1.5px solid #d0dae4; border-radius:7px;
+  font-size:0.93rem; font-family:inherit; color:#1a2332; background:white;
+  transition:border-color .15s; -webkit-appearance:none;
+}
+.form-row input:focus { outline:none; border-color:#003366; box-shadow:0 0 0 3px rgba(0,51,102,.1); }
+.form-row input.err { border-color:#e53935 !important; }
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+@media(max-width:460px){ .two-col { grid-template-columns:1fr; } }
+
+.toggle-row { display:flex; align-items:center; gap:12px; padding:12px 14px; background:#f0f5fb; border-radius:10px; margin-bottom:14px; border:1.5px solid #c8d8e8; }
+.toggle-row label { font-size:.9rem; font-weight:500; cursor:pointer; }
+.toggle { position:relative; width:42px; height:22px; flex-shrink:0; }
+.toggle input { opacity:0; width:0; height:0; }
+.toggle-slider { position:absolute; inset:0; background:#ccc; border-radius:22px; cursor:pointer; transition:background .2s; }
+.toggle-slider::before { content:''; position:absolute; height:16px; width:16px; left:3px; bottom:3px; background:white; border-radius:50%; transition:transform .2s; }
+.toggle input:checked + .toggle-slider { background:#003366; }
+.toggle input:checked + .toggle-slider::before { transform:translateX(20px); }
+
+/* ── Buttons ─────────────────────────────────────────── */
+.btn { display:inline-block; padding:11px 26px; border-radius:8px; font-size:.92rem; font-weight:600; cursor:pointer; border:none; font-family:inherit; transition:all .15s; }
+.btn-primary { background:#003366; color:white; }
+.btn-primary:hover:not(:disabled) { background:#004488; }
+.btn-primary:disabled { background:#a0b0c0; cursor:not-allowed; }
+.btn-secondary { background:white; color:#003366; border:2px solid #003366; }
+.btn-secondary:hover { background:#f0f5fb; }
+.btn-row { display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; }
+
+/* ── Notices ─────────────────────────────────────────── */
+.notice { background:#e3f2fd; border-left:4px solid #1976d2; border-radius:0 8px 8px 0; padding:11px 14px; font-size:.83rem; color:#0d47a1; margin-bottom:14px; line-height:1.5; }
+.notice.warn { background:#fff3e0; border-color:#f57c00; color:#e65100; }
+.notice.success { background:#e8f5e9; border-color:#2e7d32; color:#1b5e20; }
+
+/* ── PDF Viewer + Overlays ───────────────────────────── */
+#pdfContainer { background:#666; border-radius:8px; overflow:hidden; margin-bottom:16px; }
+.page-wrap {
+  position: relative; display: block;
+  border-bottom: 4px solid #555; line-height:0;
+}
+.page-wrap:last-child { border-bottom: none; }
+.page-wrap canvas { display:block; width:100%; height:auto; }
+.page-overlay {
+  position: absolute; top:0; left:0; width:100%; height:100%;
+  pointer-events: none;
+}
+
+/* Checkbox overlays */
+.cb-yes, .cb-no {
+  position: absolute;
+  width: 22px; height: 22px;
+  border-radius: 3px;
+  border: 2px solid rgba(100,100,200,0.6);
+  background: rgba(255,255,255,0.88);
+  cursor: pointer;
+  pointer-events: all;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  transition: all 0.1s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  z-index: 10;
+  transform: translate(-50%, -50%);
+}
+.cb-yes.checked { background: rgba(229,57,53,0.92); border-color:#b71c1c; color:white; }
+.cb-no.checked  { background: rgba(46,125,50,0.92);  border-color:#1b5e20; color:white; }
+.cb-yes:not(.checked):hover, .cb-no:not(.checked):hover {
+  border-color:#003366; background:rgba(220,235,255,0.9);
+}
+
+/* Text input overlays */
+.field-input {
+  position: absolute;
+  pointer-events: all;
+  background: rgba(173,216,230,0.35);
+  border: 1px solid rgba(0,102,204,0.5);
+  border-radius: 2px;
+  color: #000;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  outline: none;
+  padding: 0 3px;
+  z-index: 10;
+  transform: translateY(-100%); /* align top of input with field top */
+}
+.field-input:focus { background:rgba(173,216,230,0.6); border-color:#003366; }
+.field-input.auto { background:rgba(200,230,200,0.4); border-color:rgba(0,140,0,0.4); pointer-events:none; }
+
+/* Signature overlay button */
+.sig-btn {
+  position: absolute;
+  pointer-events: all;
+  background: rgba(255,235,59,0.85);
+  border: 2px dashed #f57f17;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #5d4037;
+  display: flex; align-items:center; justify-content:center; gap:4px;
+  z-index: 10;
+  transition: background 0.15s;
+}
+.sig-btn:hover { background: rgba(255,235,59,1); }
+.sig-btn.signed {
+  background: rgba(200,230,200,0.6);
+  border-color: #388e3c;
+  color: #1b5e20;
+  font-size: 0.65rem;
+}
+
+/* ── Signature Modal ─────────────────────────────────── */
+.modal-bg {
+  position: fixed; inset:0; background:rgba(0,0,0,0.7);
+  z-index: 1000; display:none; align-items:center; justify-content:center;
+}
+.modal-bg.open { display:flex; }
+.modal {
+  background:white; border-radius:16px; padding:20px;
+  width: min(520px, 96vw); max-height: 90vh; overflow-y:auto;
+}
+.modal h3 { font-size:1rem; margin-bottom:12px; }
+.sig-modal-box {
+  border: 2px solid #003366; border-radius:8px; background:#f8fafc;
+  overflow:hidden; margin-bottom:10px;
+}
+.sig-modal-box canvas { display:block; width:100%; touch-action:none; }
+.modal-btns { display:flex; gap:8px; justify-content:flex-end; }
+.modal-btns button { padding:8px 18px; border-radius:6px; border:none; font-family:inherit; font-weight:600; cursor:pointer; font-size:0.85rem; }
+.modal-btns .clear-btn { background:#f5f5f5; color:#555; border:1.5px solid #ddd; }
+.modal-btns .cancel-btn { background:#f5f5f5; color:#555; border:1.5px solid #ddd; }
+.modal-btns .done-btn { background:#003366; color:white; }
+
+/* ── Field counter ───────────────────────────────────── */
+.field-counter {
+  position: sticky; bottom:0; background:#003366; color:white;
+  padding:10px 16px; display:flex; align-items:center; justify-content:space-between;
+  font-size:0.85rem; gap:12px; z-index:50;
+}
+.field-counter span { opacity:0.85; }
+
+/* ── Spinner / done ──────────────────────────────────── */
+.spinner { width:44px;height:44px; border:4px solid #e0e8f0; border-top-color:#003366; border-radius:50%; animation:spin .8s linear infinite; margin:40px auto 18px; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.done-icon { font-size:3.5rem; text-align:center; margin:40px 0 14px; }
+.center { text-align:center; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🤿 Kyalami Scuba Club</h1>
+  <span id="headerCourse"></span>
+</header>
+<div class="progress-bar" id="progressBar">
+  <button data-step="1">① Course</button>
+  <button data-step="2">② Your Info</button>
+  <button data-step="3">③ Fill &amp; Sign Packet</button>
+  <button data-step="4">④ Submit</button>
+</div>
+
+<!-- ═══ STEP 1: Course Select ═════════════════════════════════ -->
+<div class="step active" id="step1">
+  <h2 style="margin-top:20px">Select Your Course</h2>
+  <p class="subtitle">You'll fill out and sign your official PADI packet on screen.</p>
+
+  <button class="course-btn" onclick="selectCourse('dsd')">
+    <span class="icon">🌊</span>
+    <div><div class="title">Discover Scuba Diving</div><div class="desc">Introductory experience — no certification required</div></div>
+    <span class="badge avail">Available</span>
+  </button>
+  <button class="course-btn" disabled>
+    <span class="icon">🎓</span><div><div class="title">Open Water Diver</div><div class="desc">Full PADI certification</div></div>
+    <span class="badge soon">Coming Soon</span>
+  </button>
+  <button class="course-btn" disabled>
+    <span class="icon">🔵</span><div><div class="title">Advanced Open Water</div><div class="desc">Advance your skills</div></div>
+    <span class="badge soon">Coming Soon</span>
+  </button>
+  <button class="course-btn" disabled>
+    <span class="icon">🛟</span><div><div class="title">Rescue Diver</div><div class="desc">Emergency response skills</div></div>
+    <span class="badge soon">Coming Soon</span>
+  </button>
+  <button class="course-btn" disabled>
+    <span class="icon">♻️</span><div><div class="title">Refresher / ReActivate</div><div class="desc">Refresh your dive skills</div></div>
+    <span class="badge soon">Coming Soon</span>
+  </button>
+  <button class="course-btn" disabled>
+    <span class="icon">⚗️</span><div><div class="title">Enriched Air Nitrox</div><div class="desc">Dive with enriched air</div></div>
+    <span class="badge soon">Coming Soon</span>
+  </button>
+</div>
+
+<!-- ═══ STEP 2: Basic Info ════════════════════════════════════ -->
+<div class="step" id="step2">
+  <h2 style="margin-top:20px">Student Information</h2>
+  <p class="subtitle">Enter basic info first — it will auto-fill into your packet on the next screen.</p>
+
+  <div class="toggle-row">
+    <label class="toggle"><input type="checkbox" id="isMinor" onchange="toggleMinor()"><span class="toggle-slider"></span></label>
+    <label for="isMinor">This student is a minor (under 18)</label>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Participant</h3>
+    <div class="two-col">
+      <div class="form-row"><label>First Name <span class="req">*</span></label><input type="text" id="firstName" placeholder="First name" autocomplete="given-name"></div>
+      <div class="form-row"><label>Last Name <span class="req">*</span></label><input type="text" id="lastName" placeholder="Last name" autocomplete="family-name"></div>
+    </div>
+    <div class="two-col">
+      <div class="form-row"><label>Date of Birth <span class="req">*</span></label><input type="date" id="dob"></div>
+      <div class="form-row"><label>Phone</label><input type="tel" id="phone" placeholder="Phone" autocomplete="tel"></div>
+    </div>
+    <div class="form-row"><label>Email</label><input type="email" id="email" placeholder="Email" autocomplete="email"></div>
+    <div class="form-row"><label>Street Address</label><input type="text" id="address" placeholder="Street address" autocomplete="street-address"></div>
+    <div class="two-col">
+      <div class="form-row"><label>City</label><input type="text" id="city" placeholder="City" autocomplete="address-level2"></div>
+      <div class="form-row"><label>State / Zip</label><input type="text" id="stateZip" placeholder="State / ZIP"></div>
+    </div>
+  </div>
+
+  <div class="card" id="guardianCard" style="display:none">
+    <h3 style="margin-top:0">Parent / Guardian</h3>
+    <div class="notice warn">⚠️ Parent or guardian must be present and will sign on the next screen.</div>
+    <div class="form-row"><label>Parent / Guardian Full Name <span class="req">*</span></label><input type="text" id="guardianName" placeholder="Parent or guardian full name"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Emergency Contact</h3>
+    <div class="form-row"><label>Name <span class="req">*</span></label><input type="text" id="emergencyName" placeholder="Emergency contact name"></div>
+    <div class="two-col">
+      <div class="form-row"><label>Relationship</label><input type="text" id="emergencyRel" placeholder="e.g. Spouse, Parent"></div>
+      <div class="form-row"><label>Phone <span class="req">*</span></label><input type="tel" id="emergencyPhone" placeholder="Emergency phone"></div>
+    </div>
+  </div>
+
+  <div id="step2Err" class="notice warn" style="display:none">⚠️ Please fill in all required fields (*).</div>
+  <div class="btn-row">
+    <button class="btn btn-secondary" onclick="goToStep(1)">← Back</button>
+    <button class="btn btn-primary" onclick="validateStep2()">Continue to Packet →</button>
+  </div>
+</div>
+
+<!-- ═══ STEP 3: Interactive PDF ══════════════════════════════ -->
+<div class="step" id="step3">
+  <h2 style="margin-top:20px">Complete Your Packet</h2>
+  <p class="subtitle">Fill in and sign your official PADI forms directly below. Scroll through all pages.</p>
+  <div class="notice">
+    📋 <strong>Checkboxes:</strong> tap <strong>Y</strong> (yellow = YES) or <strong>N</strong> (blue = NO) directly on each question.
+    &nbsp;✍️ <strong>Signatures:</strong> tap the yellow banner to sign.
+  </div>
+  <div id="pdfLoading" class="notice" style="background:#f5f5f5; border-color:#ccc; color:#555;">⏳ Loading your packet…</div>
+  <div id="pdfContainer"></div>
+  <div class="field-counter" id="fieldCounter" style="display:none">
+    <span id="counterText">Fill in all fields above</span>
+    <button class="btn btn-primary" id="btnSubmitPacket" onclick="goToStep(4)" disabled>Submit Packet →</button>
+  </div>
+</div>
+
+<!-- ═══ STEP 4: Processing / Done ════════════════════════════ -->
+<div class="step" id="step4">
+  <div class="spinner"></div>
+  <div class="center"><h2>Submitting…</h2><p class="subtitle" id="processingMsg" style="margin-top:8px">Preparing your documents.</p></div>
+</div>
+
+<div class="step" id="step5">
+  <div class="done-icon">✅</div>
+  <div class="center">
+    <h2>Packet Submitted!</h2>
+    <p class="subtitle" style="margin-top:8px">Your signed course packet has been saved. Let your instructor know you're done.</p>
+    <div class="notice success" style="text-align:left; margin-top:22px"><strong>What happens next:</strong><br>Your instructor will review your packet. If any medical questions require physician clearance, they'll let you know.</div>
+  </div>
+</div>
+
+<!-- ═══ Signature Modal ═══════════════════════════════════════ -->
+<div class="modal-bg" id="sigModal">
+  <div class="modal">
+    <h3 id="sigModalTitle">Sign Here</h3>
+    <div class="sig-modal-box"><canvas id="sigModalCanvas" height="180"></canvas></div>
+    <div class="modal-btns">
+      <button class="clear-btn" onclick="clearModalSig()">Clear</button>
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+      <button class="done-btn" onclick="acceptModalSig()">Done ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Scripts ════════════════════════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/4.1.7/signature_pad.umd.min.js"></script>
+<script>
+// ─────────────────────────────────────────────────────────────
+// CONFIGURATION
+// ─────────────────────────────────────────────────────────────
+const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+const PDF_BASE_PATH   = 'pdfs/';
+
+const COURSES = {
+  dsd: { name:'Discover Scuba Diving', file:'Discover Scuba Diving Packet (1).pdf' }
+};
+
+// ─────────────────────────────────────────────────────────────
+// PDF field names per-question (pages 2 & 3)
+// ─────────────────────────────────────────────────────────────
+const MED_P2_FIELDS = [
+  {yes:'Yes',   no:'No'   },{yes:'Yes_2',no:'No_2' },{yes:'Yes_3',no:'No_3' },
+  {yes:'Yes_4', no:'No_4' },{yes:'Yes_5',no:'No_5' },{yes:'Yes_6',no:'No_6' },
+  {yes:'Si',    no:'No_7' },{yes:'Yes_7',no:'No_8' },{yes:'Yes_8',no:'No_9' },
+  {yes:'Yes_9', no:'No_10'},
+];
+const MED_P3_FIELDS = [
+  // Box A
+  {yes:'Yes_10',no:'No_11'},{yes:'Yes_11',no:'No_12'},{yes:'Yes_12',no:'No_13'},
+  {yes:'Yes_13',no:'No_14'},{yes:'Yes_14',no:'No_15'},
+  // Box B (undefined = B1)
+  {yes:'undefined',no:'undefined_2'},{yes:'Yes_16',no:'No_17'},
+  {yes:'Yes_17',no:'No_18'},{yes:'Yes_18',no:'No_19'},
+  // Box C (Yes_22/No_23 duplicate for C4&C5)
+  {yes:'Yes_19',no:'No_20'},{yes:'Yes_20',no:'No_21'},{yes:'Yes_21',no:'No_22'},
+  {yes:'Yes_22',no:'No_23'},{yes:'Yes_22',no:'No_23'},
+  // Box D (undefined_3 = D1)
+  {yes:'undefined_3',no:'undefined_4'},{yes:'Yes_24',no:'No_25'},
+  {yes:'Yes_25',no:'No_26'},{yes:'Yes_26',no:'No_27'},{yes:'Yes_27',no:'No_28'},
+  // Box E
+  {yes:'Yes_28',no:'No_29'},{yes:'Yes_29',no:'No_30'},
+  {yes:'Yes_30',no:'No_31'},{yes:'Yes_31',no:'No_32'},
+  // Box F (Yes_45/No_50 anomaly for F5)
+  {yes:'Yes_32',no:'No_33'},{yes:'Yes_33',no:'No_34'},{yes:'Yes_34',no:'No_35'},
+  {yes:'Yes_35',no:'No_36'},{yes:'Yes_45',no:'No_50'},
+  // Box G
+  {yes:'Yes_37',no:'No_38'},{yes:'Yes_38',no:'No_39'},{yes:'Yes_39',no:'No_40'},
+  {yes:'Yes_40',no:'No_41'},{yes:'Yes_41',no:'No_42'},{yes:'Yes_42',no:'No_43'},
+];
+
+// ─────────────────────────────────────────────────────────────
+// CHECKBOX POSITIONS (PyMuPDF coords, top-left origin)
+// Each entry: [yesCenterX, yesCenterY, noCenterX, noCenterY]
+// ─────────────────────────────────────────────────────────────
+// Page 2 (index 1), A4 595×841
+const P2_CB = [
+  [507,278, 549,287],[507,306, 549,316],[506,342, 549,342],[507,363, 549,372],
+  [506,400, 549,400],[506,420, 549,428],[506,447, 549,457],[506,478, 549,486],
+  [506,507, 549,514],[506,544, 549,544],
+];
+// Page 3 (index 2), A4 595×841
+const P3_CB = [
+  // Box A (5)
+  [520,131,553,131],[520,149,553,149],[520,171,553,171],[520,190,553,190],[520,204,553,204],
+  // Box B (4)
+  [520,240,553,240],[520,255,553,255],[520,269,553,269],[520,291,553,291],
+  // Box C (5)
+  [520,339,553,339],[520,354,553,354],[520,368,553,368],[520,381,553,381],[520,396,553,396],
+  // Box D (5)
+  [520,434,553,434],[520,448,553,448],[520,462,553,462],[520,477,553,477],[520,491,553,491],
+  // Box E (4)
+  [520,528,553,528],[520,547,553,547],[520,566,553,566],[520,580,553,580],
+  // Box F (5)
+  [520,618,553,618],[520,633,553,633],[520,646,553,646],[520,660,553,660],[520,674,553,674],
+  // Box G (6)
+  [520,712,553,712],[520,728,553,728],[520,740,553,740],[520,755,553,755],
+  [520,769,553,769],[520,783,553,783],
+];
+
+// ─────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────
+let currentStep    = 1;
+let selectedCourse = null;
+let pdfBytes       = null;
+
+const ans = {
+  medP2: new Array(10).fill(null),   // 'yes'|'no'|null
+  medP3: new Array(34).fill(null),
+  // Signatures stored as dataURLs, keyed by role+page
+  sigs: {},                          // e.g. sigs['participant'] = 'data:image/png;...'
+};
+
+let modalPad      = null;  // SignaturePad for the modal
+let modalTarget   = null;  // which sig key we're collecting
+let modalCallback = null;  // fn to call after accepting
+
+// ─────────────────────────────────────────────────────────────
+// NAVIGATION
+// ─────────────────────────────────────────────────────────────
+function goToStep(n) {
+  document.getElementById('step' + currentStep).classList.remove('active');
+  currentStep = n;
+  document.getElementById('step' + n).classList.add('active');
+  updateProgressBar();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (n === 4) doSubmit();
+}
+function updateProgressBar() {
+  document.querySelectorAll('.progress-bar button').forEach(btn => {
+    const s = parseInt(btn.dataset.step);
+    btn.classList.remove('active','done');
+    if (s === currentStep) btn.classList.add('active');
+    else if (s < currentStep) btn.classList.add('done');
+  });
+}
+
+// ─────────────────────────────────────────────────────────────
+// COURSE SELECT
+// ─────────────────────────────────────────────────────────────
+function selectCourse(id) {
+  selectedCourse = COURSES[id];
+  document.getElementById('headerCourse').textContent = selectedCourse.name;
+  goToStep(2);
+}
+
+// ─────────────────────────────────────────────────────────────
+// MINOR TOGGLE
+// ─────────────────────────────────────────────────────────────
+function toggleMinor() {
+  const m = document.getElementById('isMinor').checked;
+  document.getElementById('guardianCard').style.display = m ? '' : 'none';
+}
+
+// ─────────────────────────────────────────────────────────────
+// STEP 2 VALIDATION
+// ─────────────────────────────────────────────────────────────
+function validateStep2() {
+  const req = ['firstName','lastName','dob','emergencyName','emergencyPhone'];
+  if (document.getElementById('isMinor').checked) req.push('guardianName');
+  let ok = true;
+  req.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el.value.trim()) {
+      el.classList.add('err');
+      el.addEventListener('input', () => el.classList.remove('err'), {once:true});
+      ok = false;
+    }
+  });
+  document.getElementById('step2Err').style.display = ok ? 'none' : '';
+  if (!ok) { document.querySelector('.err').scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  goToStep(3);
+  loadAndRenderPDF();
+}
+
+// ─────────────────────────────────────────────────────────────
+// PDF LOADING & RENDERING
+// ─────────────────────────────────────────────────────────────
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+async function loadAndRenderPDF() {
+  const loading  = document.getElementById('pdfLoading');
+  const container = document.getElementById('pdfContainer');
+  container.innerHTML = '';
+  loading.style.display = '';
+
+  try {
+    const resp = await fetch(PDF_BASE_PATH + selectedCourse.file);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    pdfBytes = new Uint8Array(await resp.arrayBuffer());
+
+    const pdfDoc = await pdfjsLib.getDocument({ data: pdfBytes.slice() }).promise;
+    loading.style.display = 'none';
+    document.getElementById('fieldCounter').style.display = '';
+
+    const viewerW = container.clientWidth || 720;
+
+    for (let i = 1; i <= pdfDoc.numPages; i++) {
+      const page = await pdfDoc.getPage(i);
+      const vp0  = page.getViewport({ scale: 1 });
+      const scale = viewerW / vp0.width;
+      const vp   = page.getViewport({ scale });
+
+      const wrap = document.createElement('div');
+      wrap.className = 'page-wrap';
+
+      const canvas = document.createElement('canvas');
+      canvas.width  = Math.round(vp.width);
+      canvas.height = Math.round(vp.height);
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+      wrap.appendChild(canvas);
+
+      const overlay = document.createElement('div');
+      overlay.className = 'page-overlay';
+      wrap.appendChild(overlay);
+
+      buildPageOverlay(i, overlay, scale, vp0.height);
+      container.appendChild(wrap);
+    }
+
+    updateCounter();
+  } catch (err) {
+    loading.innerHTML = '⚠️ Could not load PDF: ' + err.message +
+      '<br><small>Make sure the PDF is in the pdfs/ folder.</small>';
+    loading.className = 'notice warn';
+    console.error(err);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// OVERLAY BUILDER
+// Converts PyMuPDF top-left coords → CSS absolute positions.
+// PyMuPDF origin = top-left (y ↓), same as CSS — no flip needed.
+// ─────────────────────────────────────────────────────────────
+function buildPageOverlay(pageNum, overlay, scale, pageH) {
+  const g = v => document.getElementById(v) ? document.getElementById(v).value.trim() : '';
+  const fullName   = (g('firstName') + ' ' + g('lastName')).trim();
+  const dobDMY     = formatDobDMY(g('dob'));
+  const guardName  = g('guardianName');
+  const todayDMY   = formatTodayDMY();
+  const todayMDY   = formatTodayMDY();
+  const isMinor    = document.getElementById('isMinor').checked;
+
+  // helper: position overlay element at PyMuPDF rect
+  const pos = (el, x0, y0, x1, y1, minH) => {
+    const h = Math.max((y1 - y0) * scale, minH || 0);
+    el.style.left   = (x0 * scale) + 'px';
+    el.style.top    = (y0 * scale) + 'px';
+    el.style.width  = ((x1 - x0) * scale) + 'px';
+    el.style.height = h + 'px';
+  };
+
+  // helper: add auto-filled text label overlay (read-only display)
+  const autoLabel = (text, x0, y0, x1, y1) => {
+    if (!text) return;
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.value = text;
+    inp.readOnly = true;
+    inp.className = 'field-input auto';
+    inp.style.fontSize = Math.max(Math.round(10 * scale), 9) + 'px';
+    pos(inp, x0, y0, x1, y1, 14);
+    inp.style.transform = 'none';
+    overlay.appendChild(inp);
+  };
+
+  // helper: add editable text input
+  const editInput = (id, placeholder, x0, y0, x1, y1, initVal) => {
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.placeholder = placeholder;
+    inp.className = 'field-input';
+    inp.dataset.fieldId = id;
+    if (initVal) inp.value = initVal;
+    inp.style.fontSize = Math.max(Math.round(10 * scale), 9) + 'px';
+    pos(inp, x0, y0, x1, y1, 14);
+    inp.style.transform = 'none';
+    inp.addEventListener('input', updateCounter);
+    overlay.appendChild(inp);
+    return inp;
+  };
+
+  // helper: add checkbox pair (YES and NO)
+  const addCBPair = (cx_yes, cy_yes, cx_no, cy_no, arr, idx) => {
+    const SZ = 22;
+    const makeBtn = (cx, cy, type) => {
+      const btn = document.createElement('div');
+      btn.className = type === 'yes' ? 'cb-yes' : 'cb-no';
+      btn.title = type === 'yes' ? 'YES' : 'NO';
+      btn.style.left = (cx * scale) + 'px';
+      btn.style.top  = (cy * scale) + 'px';
+      btn.style.width  = SZ + 'px';
+      btn.style.height = SZ + 'px';
+      overlay.appendChild(btn);
+      return btn;
+    };
+    const yBtn = makeBtn(cx_yes, cy_yes, 'yes');
+    const nBtn = makeBtn(cx_no,  cy_no,  'no');
+
+    const refresh = () => {
+      const v = arr[idx];
+      yBtn.textContent  = v === 'yes' ? '✓' : 'Y';
+      yBtn.classList.toggle('checked', v === 'yes');
+      nBtn.textContent  = v === 'no'  ? '✓' : 'N';
+      nBtn.classList.toggle('checked', v === 'no');
+    };
+    yBtn.onclick = () => { arr[idx] = arr[idx] === 'yes' ? null : 'yes'; refresh(); updateCounter(); };
+    nBtn.onclick = () => { arr[idx] = arr[idx] === 'no'  ? null : 'no';  refresh(); updateCounter(); };
+    refresh();
+  };
+
+  // helper: add "TAP TO SIGN" button
+  const addSigBtn = (sigKey, label, x0, y0, x1, y1, signerNote) => {
+    const btn = document.createElement('div');
+    btn.className = 'sig-btn';
+    btn.title = label;
+    pos(btn, x0, y0, x1, y1, 30);
+    btn.style.transform = 'none';
+    btn.style.fontSize  = Math.max(Math.round(9 * scale), 8) + 'px';
+    updateSigBtn(btn, sigKey);
+    btn.onclick = () => openModal(sigKey, label, (dataURL) => {
+      ans.sigs[sigKey] = dataURL;
+      updateSigBtn(btn, sigKey);
+      updateCounter();
+    });
+    overlay.appendChild(btn);
+  };
+
+  // ── PAGE-SPECIFIC OVERLAYS ──────────────────────────────────
+
+  if (pageNum === 1) {
+    // Student Records — no AcroForm fields, coordinate-based blanks
+    // Auto-fill participant info
+    autoLabel(fullName,                               220, 270, 555, 285);
+    autoLabel(dobDMY,                                 220, 298, 420, 312);
+    autoLabel(g('address'),                           200, 328, 555, 342);
+    autoLabel([g('city'),g('stateZip')].filter(Boolean).join(', '), 82, 360, 555, 374);
+    autoLabel(g('phone'),                             200, 389, 555, 403);
+    autoLabel(g('email'),                             200, 420, 555, 434);
+    autoLabel(g('emergencyName'),                     200, 590, 555, 604);
+    autoLabel(g('emergencyRel'),                      200, 610, 555, 624);
+    autoLabel(g('emergencyPhone'),                    200, 632, 555, 646);
+  }
+
+  if (pageNum === 2) {
+    // Medical Q1–Q10 checkboxes
+    P2_CB.forEach(([yx, yy, nx, ny], i) => addCBPair(yx, yy, nx, ny, ans.medP2, i));
+
+    // Bottom fields — auto-filled
+    autoLabel(isMinor ? (guardName || '⬆ Guardian signs above') : fullName, 47, 643, 340, 661);
+    autoLabel(todayDMY,  364, 643, 543, 661);
+    autoLabel(fullName,  47,  675, 340, 694);
+    autoLabel(dobDMY,    364, 675, 543, 694);
+
+    // Participant/guardian signature on the medical form
+    const medSigKey = isMinor ? 'guardian' : 'participant';
+    addSigBtn(medSigKey, isMinor ? 'Parent/Guardian Signature' : 'Participant Signature',
+      47, 643, 340, 661);
+  }
+
+  if (pageNum === 3) {
+    // Medical Box A–G checkboxes
+    P3_CB.forEach(([yx, yy, nx, ny], i) => addCBPair(yx, yy, nx, ny, ans.medP3, i));
+
+    // Top: participant name + DOB
+    autoLabel(fullName, 109, 30, 285, 46);
+    autoLabel(dobDMY,   353, 30, 560, 46);
+  }
+
+  if (pageNum === 4) {
+    // Equipment Agreement — coordinate-based, no AcroForm fields
+    // Name in "I, ___ HAVE CAREFULLY READ..."
+    autoLabel(fullName, 50, 460, 450, 472);
+
+    // Participant signature + date
+    addSigBtn('participant', 'Participant Signature', 37, 548, 250, 560);
+    autoLabel(todayMDY, 330, 548, 488, 560);
+
+    // Minor section
+    if (isMinor) {
+      autoLabel(guardName,  190, 658, 400, 669);
+      addSigBtn('guardian', 'Guardian Signature', 100, 678, 310, 690);
+      autoLabel(todayMDY,   180, 700, 350, 711);
+    }
+  }
+
+  if (pageNum === 5) {
+    // Liability Release
+    // Text3 — "I, ___, hereby affirm" at [48,279,264,293]
+    autoLabel(fullName, 48, 280, 262, 292);
+    // Text5 — "I, ___, BY THIS INSTRUMENT" at [324,516,569,526]
+    autoLabel(fullName, 324, 517, 567, 526);
+    // Date fields
+    autoLabel(todayDMY, 446, 701, 563, 712);
+
+    // Participant signature at [40,704,436,713]
+    addSigBtn('participant', 'Participant Signature', 40, 704, 434, 740);
+
+    if (isMinor) {
+      autoLabel(todayDMY, 445, 727, 563, 740);
+      addSigBtn('guardian', 'Parent/Guardian Signature', 40, 732, 434, 760);
+    }
+  }
+
+  if (pageNum === 6 && isMinor) {
+    // Florida Addendum
+    autoLabel(guardName, 27, 646, 455, 665);  // parent sig area (auto-fill name)
+    addSigBtn('guardian', 'Parent/Guardian Signature', 27, 646, 455, 668);
+    autoLabel(todayDMY,  459, 646, 578, 665);
+    autoLabel(fullName,  27, 721, 445, 740);
+    autoLabel(dobDMY,    459, 721, 578, 740);
+  }
+
+  if (pageNum === 7 && isMinor) {
+    // Youth Acknowledgment
+    // Parent name in "I/we, ___" at [75,185,267,204]
+    autoLabel(guardName, 75, 186, 265, 203);
+    // Child name (coordinate, widget is mistyped as CheckBox)
+    autoLabel(fullName, 369, 186, 565, 203);
+
+    // Bottom signature lines
+    autoLabel(guardName, 48, 630, 235, 647);
+    autoLabel(todayDMY,  478, 630, 562, 647);
+    addSigBtn('guardian', 'Parent/Guardian Signature', 248, 630, 467, 648);
+
+    autoLabel(fullName, 48, 656, 235, 673);
+    autoLabel(todayDMY, 478, 656, 562, 673);
+    addSigBtn('participant', 'Participant/Minor Signature', 248, 656, 467, 674);
+  }
+}
+
+function updateSigBtn(btn, sigKey) {
+  if (ans.sigs[sigKey]) {
+    btn.classList.add('signed');
+    btn.innerHTML = '✅ Signed';
+  } else {
+    btn.classList.remove('signed');
+    btn.innerHTML = '✍️ TAP TO SIGN';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// FIELD COUNTER & SUBMIT GATE
+// ─────────────────────────────────────────────────────────────
+function updateCounter() {
+  const isMinor = document.getElementById('isMinor').checked;
+
+  const p2Done = ans.medP2.every(a => a !== null);
+  const p3Done = ans.medP3.every(a => a !== null);
+  const medDone = p2Done && p3Done;
+
+  const sigParticipant = !!ans.sigs['participant'];
+  const sigGuardian    = !isMinor || !!ans.sigs['guardian'];
+
+  const total = 44 + (isMinor ? 2 : 1); // medical Qs + sig(s)
+  let done = 0;
+  ans.medP2.forEach(a => { if (a !== null) done++; });
+  ans.medP3.forEach(a => { if (a !== null) done++; });
+  if (sigParticipant) done++;
+  if (isMinor && ans.sigs['guardian']) done++;
+
+  const remaining = total - done;
+  const allDone = remaining === 0;
+
+  document.getElementById('counterText').textContent =
+    allDone ? '✅ All fields complete — ready to submit!' :
+    remaining + ' field' + (remaining === 1 ? '' : 's') + ' remaining';
+  document.getElementById('btnSubmitPacket').disabled = !allDone;
+}
+
+// ─────────────────────────────────────────────────────────────
+// SIGNATURE MODAL
+// ─────────────────────────────────────────────────────────────
+function openModal(sigKey, title, callback) {
+  document.getElementById('sigModalTitle').textContent = 'Sign: ' + title;
+  document.getElementById('sigModal').classList.add('open');
+  modalTarget   = sigKey;
+  modalCallback = callback;
+
+  const canvas = document.getElementById('sigModalCanvas');
+  canvas.width  = canvas.parentElement.clientWidth || 480;
+  if (!modalPad) {
+    modalPad = new SignaturePad(canvas, { backgroundColor:'rgba(0,0,0,0)', penColor:'#000' });
+  } else {
+    modalPad.clear();
+  }
+  // If already signed, load existing signature
+  if (ans.sigs[sigKey]) {
+    const img = new Image();
+    img.onload = () => { canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height); };
+    img.src = ans.sigs[sigKey];
+  }
+}
+
+function clearModalSig() { if (modalPad) modalPad.clear(); }
+
+function closeModal() {
+  document.getElementById('sigModal').classList.remove('open');
+  modalTarget = null; modalCallback = null;
+}
+
+function acceptModalSig() {
+  if (!modalPad || modalPad.isEmpty()) { alert('Please sign before accepting.'); return; }
+  const dataURL = modalPad.toDataURL('image/png');
+  if (modalCallback) modalCallback(dataURL);
+  closeModal();
+}
+
+// ─────────────────────────────────────────────────────────────
+// SUBMIT
+// ─────────────────────────────────────────────────────────────
+async function doSubmit() {
+  const setMsg = m => document.getElementById('processingMsg').textContent = m;
+  try {
+    setMsg('Filling in your packet…');
+    const sigPng    = ans.sigs['participant'] ? dataURLtoBytes(ans.sigs['participant']) : null;
+    const parentPng = ans.sigs['guardian']    ? dataURLtoBytes(ans.sigs['guardian'])    : null;
+    const filledPdf = await fillDSDPdf(sigPng, parentPng);
+
+    setMsg('Saving to Google Drive…');
+    const first = document.getElementById('firstName').value.trim();
+    const last  = document.getElementById('lastName').value.trim();
+
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        pdf: uint8ArrayToBase64(filledPdf),
+        course: selectedCourse.name,
+        studentName: first + ' ' + last,
+        date: todayISO(),
+        email: document.getElementById('email').value.trim(),
+        isMinor: document.getElementById('isMinor').checked,
+      }),
+    });
+    const result = await resp.json().catch(() => ({}));
+    if (result.status === 'error') throw new Error(result.message || 'Server error');
+    goToStep(5);
+  } catch (err) {
+    document.getElementById('processingMsg').textContent =
+      '⚠️ Error: ' + err.message + '\n\nPlease screenshot this and notify your instructor.';
+    console.error(err);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// PDF FILLING (pdf-lib) — same logic, now driven by ans.*
+// ─────────────────────────────────────────────────────────────
+async function fillDSDPdf(sigPngBytes, parentSigPngBytes) {
+  const { PDFDocument, StandardFonts, rgb } = PDFLib;
+  const pdfDoc = await PDFDocument.load(pdfBytes);
+  const form   = pdfDoc.getForm();
+  const font   = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const FS = 9;
+  const H_LTR = 792, H_A4 = 841;
+  const L = (y, H) => H - y;
+
+  const g = id => document.getElementById(id) ? document.getElementById(id).value.trim() : '';
+  const fullName  = (g('firstName') + ' ' + g('lastName')).trim();
+  const dobDMY    = formatDobDMY(g('dob'));
+  const isMinor   = document.getElementById('isMinor').checked;
+  const guardian  = g('guardianName');
+  const todayDMY  = formatTodayDMY();
+  const todayMDY  = formatTodayMDY();
+  const pages     = pdfDoc.getPages();
+  const [p1,p2,p3,p4,p5,p6,p7] = pages;
+
+  const setText = (name, val) => { try { form.getTextField(name).setText(val); } catch(e){} };
+  const checkIt = name => { try { form.getCheckBox(name).check(); } catch(e){} };
+  const draw    = (pg, text, x, pyY, H) => {
+    if (!text) return;
+    pg.drawText(text, { x, y: L(pyY, H), size: FS, font, color: rgb(0,0,0) });
+  };
+
+  // Page 1 — coordinate stamps
+  draw(p1, fullName,                               228, 283, H_LTR);
+  draw(p1, dobDMY,                                 228, 308, H_LTR);
+  draw(p1, g('address'),                           200, 338, H_LTR);
+  draw(p1, [g('city'),g('stateZip')].filter(Boolean).join(', '), 82, 370, H_LTR);
+  draw(p1, g('phone'),                             200, 399, H_LTR);
+  draw(p1, g('email'),                             200, 430, H_LTR);
+  draw(p1, g('emergencyName'),                     200, 602, H_LTR);
+  draw(p1, g('emergencyRel'),                      200, 622, H_LTR);
+  draw(p1, g('emergencyPhone'),                    200, 643, H_LTR);
+
+  // Page 2 — medical Q1–Q10 + bottom fields
+  ans.medP2.forEach((a, i) => {
+    const f = MED_P2_FIELDS[i];
+    if (a === 'yes') checkIt(f.yes); else if (a === 'no') checkIt(f.no);
+  });
+  setText('Participant Name Print', fullName);
+  setText('Birthdate ddmmyyyy',     dobDMY);
+  setText('Date ddmmyyyy',          todayDMY);
+  setText('Facility Name Print',    'Kyalami Scuba Club');
+
+  // Page 3 — medical Box A–G + header name
+  ans.medP3.forEach((a, i) => {
+    const f = MED_P3_FIELDS[i];
+    if (a === 'yes') checkIt(f.yes); else if (a === 'no') checkIt(f.no);
+  });
+  setText('Participant Name', fullName);
+  setText('Birthdate',        dobDMY);
+
+  // Page 5 — liability
+  setText('Text3', fullName);
+  setText('Text5', fullName);
+  setText('Date Day  Month  Year',   todayDMY);
+  if (isMinor) setText('Date Day  Month  Year_2', todayDMY);
+
+  // Page 6 — Florida Addendum (minor only)
+  if (isMinor) {
+    setText('Date DayMonthYear',       todayDMY);
+    setText('Minor Child Name',        fullName);
+    setText('Birth Date DayMonthYear', dobDMY);
+  }
+
+  // Page 7 — Youth Acknowledgment (minor only)
+  if (isMinor) {
+    setText('have viewed and understand the Youth Diving: Responsibility and Risks video or flip chart  We affirm we', guardian);
+    setText('ParentGuardian Name',   guardian);
+    setText('ParticipantMinor Name', fullName);
+    setText('DayMonthYear',          todayDMY);
+    setText('DayMonthYear_2',        todayDMY);
+  }
+
+  // Flatten all AcroForm fields
+  form.flatten();
+
+  // Embed signature images AFTER flatten (so they're on top)
+  const pgs = pdfDoc.getPages();
+  const [fp1,fp2,fp3,fp4,fp5,fp6,fp7] = pgs;
+
+  let sigImg = null, parentImg = null;
+  if (sigPngBytes)       sigImg    = await pdfDoc.embedPng(sigPngBytes);
+  if (parentSigPngBytes) parentImg = await pdfDoc.embedPng(parentSigPngBytes);
+
+  if (sigImg) {
+    // Page 2: [Participant] field [47,642,345,662] (A4=841)
+    const medSig = (isMinor && parentImg) ? parentImg : sigImg;
+    fp2.drawImage(medSig, { x:47, y:L(662, H_A4), width:200, height:20 });
+
+    // Page 4: participant sig line at y=548-559
+    fp4.drawImage(sigImg, { x:37, y:L(559, H_LTR), width:200, height:20 });
+    draw(fp4, todayMDY, 330, 559, H_LTR);
+    draw(fp4, fullName,  50, 469, H_LTR);
+
+    // Page 5: Participants Signature [40,704,436,713]
+    fp5.drawImage(sigImg, { x:40, y:L(713, H_LTR), width:280, height:22 });
+
+    // Page 7: Participant/Minor Sig at y=665-675
+    if (isMinor) fp7.drawImage(sigImg, { x:265, y:L(675, H_LTR), width:190, height:16 });
+  }
+
+  if (parentImg && isMinor) {
+    // Page 4: guardian sig at y=678-690
+    fp4.drawImage(parentImg, { x:100, y:L(690, H_LTR), width:180, height:20 });
+    draw(fp4, guardian, 190, 668, H_LTR);
+    draw(fp4, todayMDY, 178, 711, H_LTR);
+
+    // Page 5: Parent/Guardian [40,732,436,741]
+    fp5.drawImage(parentImg, { x:40, y:L(741, H_LTR), width:280, height:22 });
+
+    // Page 6: parent sig at y=657-669 (Florida Addendum)
+    fp6.drawImage(parentImg, { x:27, y:L(669, H_LTR), width:250, height:22 });
+
+    // Page 7: Parent/Guardian Sig at y=639-649
+    fp7.drawImage(parentImg, { x:265, y:L(649, H_LTR), width:190, height:16 });
+    draw(fp7, fullName, 370, 204, H_LTR);  // child name (CheckBox-typed field)
+  }
+
+  return await pdfDoc.save();
+}
+
+// ─────────────────────────────────────────────────────────────
+// UTILITIES
+// ─────────────────────────────────────────────────────────────
+function dataURLtoBytes(url) {
+  const b = atob(url.split(',')[1]);
+  const out = new Uint8Array(b.length);
+  for (let i = 0; i < b.length; i++) out[i] = b.charCodeAt(i);
+  return out;
+}
+function uint8ArrayToBase64(arr) {
+  let s = ''; const c = 8192;
+  for (let i = 0; i < arr.length; i += c) s += String.fromCharCode(...arr.subarray(i, i + c));
+  return btoa(s);
+}
+function todayISO()    { return new Date().toISOString().split('T')[0]; }
+function formatTodayDMY() { const d = new Date(); return p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear(); }
+function formatTodayMDY() { const d = new Date(); return p(d.getMonth()+1)+'/'+p(d.getDate())+'/'+d.getFullYear(); }
+function formatDobDMY(iso) { if (!iso) return ''; const [y,m,d]=iso.split('-'); return `${d}/${m}/${y}`; }
+function p(n) { return String(n).padStart(2,'0'); }
+
+// ─────────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  updateProgressBar();
+  window.addEventListener('resize', () => {
+    if (currentStep === 3) { /* future: re-render overlays at new scale */ }
+  });
+});
+</script>
+</body>
+</html>
